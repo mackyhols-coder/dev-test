@@ -1,5 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Common.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,6 +26,7 @@ namespace Application.Client.Commands.CreateClient
                 request.PhoneNumber,
                 request.Email,
                 request.DocumentNumber,
+                DateValidatorUtils.ParseToDate(request.BirthDate),
                 new Domain.Address(
                     request.Address.PostalCode,
                     request.Address.AddressLine,

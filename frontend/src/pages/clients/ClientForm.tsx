@@ -14,6 +14,7 @@ import yup from "@/utils/yup";
 import React, { Suspense } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { Formik } from "formik";
+import {createDatePickerHandler, formatDateForAPI, formatDateForDatePicker, parseDate} from "@/utils/date";
 
 const INITIAL_VALUES: Client = {
   firstName: "",
@@ -21,6 +22,7 @@ const INITIAL_VALUES: Client = {
   phoneNumber: "",
   email: "",
   documentNumber: "",
+  birthDate: "",
   address: {
     postalCode: "",
     addressLine: "",
@@ -38,6 +40,7 @@ const schemaValidation = yup.object().shape({
   phoneNumber: yup.string().required("Telefone é obrigatório"),
   email: yup.string().email("Email inválido").required("Email é obrigatório"),
   documentNumber: yup.string().required("Documento é obrigatório"),
+  birthDate: yup.string().required("Data de nascimento é obrigatória"),
   address: yup.object().shape({
     postalCode: yup.string().required("CEP é obrigatório"),
     addressLine: yup.string().required("Endereço é obrigatório"),
@@ -66,6 +69,7 @@ const ClientForm = () => {
       const clientToSave: Client = {
         ...values,
         phoneNumber: values.phoneNumber.replace(/\D/g, ''),
+        birthDate: formatDateForAPI(values.birthDate),
         address: {
           ...values.address,
           postalCode: values.address.postalCode.replace(/\D/g, ''),
@@ -173,6 +177,22 @@ const ClientForm = () => {
                         handleChange={handleChange}
                         value={values.documentNumber}
                         formikError={errors.documentNumber}
+                      />
+                    </Col>
+                    <Col md={4}>
+                      <TextFormField
+                        componentType={TextFormFieldType.DATE_PICKER}
+                        name="birthDate"
+                        label="Data de Nascimento"
+                        required
+                        placeholderText="dd/mm/aaaa"
+                        handleBlur={handleBlur}
+                        handleChange={createDatePickerHandler("birthDate", handleChange)}
+                        value={formatDateForDatePicker(values.birthDate)}
+                        formikError={errors.birthDate}
+                        showYearDropdown
+                        yearDropdownItemNumber={100}
+                        isClearable
                       />
                     </Col>
                   </Row>

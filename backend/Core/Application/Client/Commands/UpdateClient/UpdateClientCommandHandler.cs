@@ -1,5 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Common.Utils;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -26,12 +27,16 @@ public class UpdateClientCommandHandler : IRequestHandler<UpdateClientCommandReq
             throw new NotFoundException(nameof(Domain.Client), request.Id);
         }
 
+        if (await _context.Clients.AnyAsync(x => x.DocumentNumber == client.DocumentNumber && x.Id != request.Id))
+            throw new BadRequestException("Document already exists");
+
         client.UpdateInfo(
             request.FirstName,
             request.LastName,
             request.PhoneNumber,
             request.Email,
-            request.DocumentNumber
+            request.DocumentNumber,
+            DateValidatorUtils.ParseToDate(request.BirthDate)
         );
 
         client.UpdateAddress(new Address(

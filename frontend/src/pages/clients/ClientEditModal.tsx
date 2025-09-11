@@ -7,6 +7,7 @@ import { handlePhoneNumberChange } from "@/helpers/handlePhoneNumberChange";
 import CustomModal from "@/components/CustomModal";
 import {TextFormField} from "@/components/form/TextFormField/TextFormField";
 import { TextFormFieldType } from "@/components/form/TextFormField/TextFormFieldType";
+import {createDatePickerHandler, formatDateForAPI, formatDateForDatePicker, parseDate} from "@/utils/date";
 
 interface ClientEditModalProps {
   show: boolean;
@@ -21,6 +22,7 @@ const schemaValidation = yup.object().shape({
   phoneNumber: yup.string().required("Telefone é obrigatório"),
   email: yup.string().email("Email inválido").required("Email é obrigatório"),
   documentNumber: yup.string().required("Documento é obrigatório"),
+  birthDate: yup.string().required("Data de nascimento é obrigatória"),
   address: yup.object().shape({
     postalCode: yup.string().required("CEP é obrigatório"),
     addressLine: yup.string().required("Endereço é obrigatório"),
@@ -43,6 +45,7 @@ const ClientEditModal: React.FC<ClientEditModalProps> = ({
     phoneNumber: "",
     email: "",
     documentNumber: "",
+    birthDate: "",
     address: {
       postalCode: "",
       addressLine: "",
@@ -71,6 +74,7 @@ const ClientEditModal: React.FC<ClientEditModalProps> = ({
           const clientToSave: Client = {
             ...values,
             phoneNumber: values.phoneNumber.replace(/\D/g, ''),
+            birthDate: formatDateForAPI(values.birthDate),
             address: {
               ...values.address,
               postalCode: values.address.postalCode.replace(/\D/g, ''),
@@ -156,6 +160,22 @@ const ClientEditModal: React.FC<ClientEditModalProps> = ({
                   handleChange={handleChange}
                   value={values.documentNumber}
                   formikError={errors.documentNumber}
+                />
+              </Col>
+              <Col md={4}>
+                <TextFormField
+                  componentType={TextFormFieldType.DATE_PICKER}
+                  name="birthDate"
+                  label="Data de Nascimento"
+                  required
+                  placeholderText="dd/mm/aaaa"
+                  handleBlur={handleBlur}
+                  handleChange={createDatePickerHandler("birthDate", handleChange)}
+                  value={formatDateForDatePicker(values.birthDate)}
+                  formikError={errors.birthDate}
+                  showYearDropdown
+                  yearDropdownItemNumber={100}
+                  isClearable
                 />
               </Col>
             </Row>

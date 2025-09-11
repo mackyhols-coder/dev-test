@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 #nullable disable
 
-namespace Persistence.Migrations
+namespace Persistence.Migrations.Client
 {
     [DbContext(typeof(ClientControlContext))]
-    partial class ClientControlContextModelSnapshot : ModelSnapshot
+    [Migration("20250911202047_AddBirthDateToClient")]
+    partial class AddBirthDateToClient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,15 +96,6 @@ namespace Persistence.Migrations
 
                     b.ToTable("User", (string)null);
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("a1b2c3d4-e5f6-7890-1234-567890abcdef"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PasswordHash = "$2a$11$5lKCgo.cvqYJsgdqCiGe5OUzCQv54Ngq4Y6dbG6rg1cqUF2Zy79Sa",
-                            Profile = "Administrator",
-                            Username = "admin"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Client", b =>

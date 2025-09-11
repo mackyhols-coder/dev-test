@@ -12,14 +12,14 @@ import {FaEdit} from "react-icons/fa";
 import ClientEditModal from "@/pages/clients/ClientEditModal";
 import {toastr} from "@/utils/toastr";
 import {errorHandling} from "@/utils/errorHandling";
+import {formatDateForDisplay} from "@/utils/date";
 
 const ClientListing = () => {
   const navigate = useNavigate();
   const [date, setDate] = useState<Date>();
   const [editModalShow, setEditModalShow] = useState<boolean>(false);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
-
-
+  
   useEffect(() => {
     setDate(new Date());
   }, []);
@@ -81,12 +81,16 @@ const ClientListing = () => {
         <DataTable<Client, ClientFilter>
           thin
           columns={[
-
             {Header: "Nome", accessor: "firstName"},
             {Header: "Sobrenome", accessor: "lastName"},
             {Header: "Email", accessor: "email"},
             {Header: "Telefone", accessor: "phoneNumber"},
             {Header: "Documento", accessor: "documentNumber"},
+            {
+              Header: "Data de Nascimento",
+              accessor: "birthDate",
+              Cell: ({ value }) => <span>{formatDateForDisplay(value)}</span>
+            },
             {
               Header: "Ações",
               id: "actions",

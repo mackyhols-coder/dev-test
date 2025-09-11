@@ -29,6 +29,12 @@ public class UpdateClientCommandValidator : AbstractValidator<UpdateClientComman
             .Must(DocumentValidatorUtils.IsValidCpfOrCnpj)
             .WithMessage((obj, propertyValue) => $"DocumentNumber inválido. Deve ser um CPF ou CNPJ válido");
 
+        RuleFor(x => x.BirthDate)
+            .NotEmpty()
+            .WithMessage("BirthDate obrigatório")
+            .Must(DateValidatorUtils.IsValidDate)
+            .WithMessage("BirthDate inválido. O formato deve ser dd/MM/yyyy");
+
         RuleFor(x => x.Address)
             .NotNull()
             .WithMessage((obj, propertyValue) => $"Address obrigatório")

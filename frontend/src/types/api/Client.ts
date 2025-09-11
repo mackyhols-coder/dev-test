@@ -7,5 +7,6 @@ export interface Client {
   phoneNumber: string;
   email: string;
   documentNumber: string;
+  birthDate: string;
   address: Address;
 }
