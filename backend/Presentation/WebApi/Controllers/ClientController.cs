@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Client.Queries.ClientByDocumentQuery;
+using Application.Client.Commands.UpdateClient;
 
 namespace WebApi.Controllers
 {
@@ -27,6 +28,14 @@ namespace WebApi.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
         public async Task<IActionResult> Create([FromBody] CreateClientCommandRequest request)
+        {
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Update([FromBody] UpdateClientCommandRequest request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);

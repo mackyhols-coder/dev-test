@@ -20,5 +20,19 @@
             DocumentNumber = documentNumber;
             Address = address;
         }
+
+        public void UpdateInfo(string firstName, string lastName, string phoneNumber, string email, string documentNumber)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            PhoneNumber = phoneNumber;
+            Email = email;
+            DocumentNumber = documentNumber;
+        }
+
+        public void UpdateAddress(Address address)
+        {
+            Address = address;
+        }
     }
 }
