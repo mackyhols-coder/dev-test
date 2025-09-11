@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Client.Queries.ClientByDocumentQuery;
 
 namespace WebApi.Controllers
 {
@@ -44,6 +45,17 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var response = await _mediator.Send(new ClientByIdQueryRequest { Id = id });
+
+            return Ok(response);
+        }
+
+        [HttpGet("document/{document}")]
+        [ProducesResponseType(typeof(ClientByDocumentQueryResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByDocument([FromRoute] string document)
+        {
+            var decodedDocument = System.Web.HttpUtility.UrlDecode(document);
+
+            var response = await _mediator.Send(new ClientByDocumentQueryRequest { DocumentNumber = decodedDocument });
 
             return Ok(response);
         }

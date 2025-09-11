@@ -18,6 +18,10 @@ class ClientService extends BaseService {
     return await this.get<Client>(id);
   }
 
+  async getByDocument(document: string): Promise<Client> {
+    return await this.get<Client>(`document/${document}`);
+  }
+
   async update(id: string, client: Client): Promise<void> {
     return await this.put<Client, void>(id, client);
   }
