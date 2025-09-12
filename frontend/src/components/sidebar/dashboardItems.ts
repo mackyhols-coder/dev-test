@@ -14,4 +14,10 @@ export const SIDEBAR = {
             pages: [CLIENTS_PAGE, USERS_PAGE]
         }
     ],
+    [UserProfile.Operator]: [
+        {
+            title: "Operação",
+            pages: [CLIENTS_PAGE]
+        }
+    ],
 }

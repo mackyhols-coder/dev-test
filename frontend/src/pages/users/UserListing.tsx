@@ -65,6 +65,8 @@ const UserListing = () => {
       switch (profile) {
         case 'Administrator':
           return "Administrador";
+        case 'Operator':
+          return "Operador";
         default:
           return "Desconhecido";
       }
@@ -74,6 +76,8 @@ const UserListing = () => {
     switch (profile) {
       case UserProfile.Administrator:
         return "Administrador";
+      case UserProfile.Operator:
+        return "Operador";
       default:
         return "Desconhecido";
     }
