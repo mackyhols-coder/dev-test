@@ -1,5 +1,6 @@
 import { BaseService } from "./BaseService";
 import { Client } from "@/types/api/Client";
+import {ImportJobStatus, StartImportResponse} from "@/types/ImportJob";
 
 class ClientService extends BaseService {
   constructor() {
@@ -24,6 +25,14 @@ class ClientService extends BaseService {
 
   async update(id: string, client: Client): Promise<void> {
     return await this.put<Client, void>(id, client);
+  }
+  
+  async startImport(formData: FormData): Promise<StartImportResponse> {
+    return await this.postFile<StartImportResponse>("import", formData);
+  }
+
+  async getImportStatus(jobId: string): Promise<ImportJobStatus> {
+    return await this.get<ImportJobStatus>(`import/status/${jobId}`);
   }
 }
 

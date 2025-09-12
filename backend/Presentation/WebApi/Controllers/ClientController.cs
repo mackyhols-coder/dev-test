@@ -7,9 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+using Application.Client.Commands.ImportClient;
 using Application.Client.Queries.ClientByDocumentQuery;
 using Application.Client.Commands.UpdateClient;
+using Application.Client.Queries.ImportClient;
+using Application.Common.Interfaces;
+using Application.Common.Models;
+using Application.Imports;
+using WebApi.Commom;
 
 namespace WebApi.Controllers
 {
@@ -19,10 +27,14 @@ namespace WebApi.Controllers
     public class ClientController : ControllerBase
     {
         private readonly IMediator _mediator;
-
-        public ClientController(IMediator mediator)
+        private readonly IImportJobService _importJobService;
+        private readonly IImportQueue _importQueue;
+        
+        public ClientController(IMediator mediator, IImportJobService importJobService, IImportQueue importQueue)
         {
             _mediator = mediator;
+            _importJobService = importJobService;
+            _importQueue = importQueue;
         }
 
         [HttpPost]
@@ -30,6 +42,67 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Create([FromBody] CreateClientCommandRequest request)
         {
             var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
+        [HttpPost("import")]
+        [ProducesResponseType(typeof(StartImportResponse), StatusCodes.Status202Accepted)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
+        [RequestSizeLimit(10 * 1024 * 1024)]
+        public async Task<IActionResult> StartImport([FromForm] IFormFile file)
+        {
+            byte[] fileContent;
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                fileContent = memoryStream.ToArray();
+            }
+
+            var userId = User?.Identity?.Name ?? 
+                         throw new Exception("O usuário não foi identificado.");
+
+            var jobId = await _importJobService.StartImportJobAsync(file.FileName, fileContent, userId);
+
+            var job = await _importJobService.GetJobStatusAsync(jobId);
+            _importQueue.TryEnqueue(job);
+
+            var response = new StartImportResponse
+            {
+                JobId = jobId,
+                Message = "Importação iniciada com sucesso.",
+                Status = "Accepted"
+            };
+
+            return Accepted(response);
+        }
+
+        [HttpGet("import/status/{jobId}")]
+        [ProducesResponseType(typeof(ImportJob), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetImportStatus([FromRoute] Guid jobId)
+        {
+            var job = await _importJobService.GetJobStatusAsync(jobId);
+
+            if (job == null)
+            {
+                return NotFound(new { message = "Job não encontrado" });
+            }
+
+            var response = new
+            {
+                job.Id,
+                job.FileName,
+                job.Status,
+                job.CreatedAt,
+                job.StartedAt,
+                job.CompletedAt,
+                job.ErrorMessage,
+                job.TotalRecords,
+                job.SuccessfulImports,
+                job.FailedImports,
+                job.ResultDetails
+            };
+
             return Ok(response);
         }
 

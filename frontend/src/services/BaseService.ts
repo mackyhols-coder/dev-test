@@ -28,7 +28,17 @@ export class BaseService {
         const response = await this._axios.put<TR>(`${this._controller}/${url}`, data, { signal });
         return response.data;
     }
-
+  
+    async postFile<TR = any>(url: string, formData: FormData, signal?: AbortSignal): Promise<TR> {
+      const response = await this._axios.post<TR>(`${this._controller}/${url}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        signal
+      });
+      return response.data;
+    }
+    
     async create<T = any, TR = T>(data: T, signal?: AbortSignal): Promise<TR> {
         const response = await this._axios.post<TR>(this._controller, data, { signal });
         return response.data;

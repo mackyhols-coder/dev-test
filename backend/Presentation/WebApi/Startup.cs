@@ -10,7 +10,10 @@ using WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Application.Common.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Persistence.Services;
+using WebApi.Services;
 
 namespace WebApi
 {
@@ -89,6 +92,10 @@ namespace WebApi
                     }
                 });
             });
+            
+            services.AddSingleton<IImportJobService, ImportJobService>();
+            services.AddSingleton<IImportQueue, ImportQueue>();
+            services.AddHostedService<ImportBackgroundService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
