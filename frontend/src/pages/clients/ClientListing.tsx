@@ -142,7 +142,6 @@ const ClientListing = () => {
       errorHandling(error);
       setIsImporting(false);
     } finally {
-      // Limpar o input file para permitir selecionar o mesmo arquivo novamente
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }

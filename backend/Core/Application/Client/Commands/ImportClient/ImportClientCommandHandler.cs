@@ -121,7 +121,7 @@ public class ImportClientCommandHandler : IRequestHandler<ImportClientCommandReq
     {
         var expectedHeaders = new[]
         {
-            "nome", "sobrenome", "telefone", "email", "cpf", "aniversário", "endereço"
+            "nome", "sobrenome", "telefone", "email", "cpf", "aniversário", "cep", "endereço", "número", "complemento", "bairro", "cidade", "estado"
         };
 
         string[] headers = ParseCsvLine(headerLine);
