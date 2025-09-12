@@ -10,11 +10,10 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import {Suspense} from "react";
 import {Loader} from "react-feather";
-import {Card, Col, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Form, Row} from "react-bootstrap";
 import {Formik} from "formik";
 import { TextFormField } from "@/components/form/TextFormField/TextFormField";
 import { TextFormFieldType } from "@/components/form/TextFormField/TextFormFieldType";
-import {Button} from "@mui/material";
 import React from "react";
 
 const INITIAL_VALUES: User = {

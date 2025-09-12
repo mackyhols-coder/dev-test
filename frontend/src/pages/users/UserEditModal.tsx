@@ -4,9 +4,8 @@ import { UserProfile, userProfileOptions } from "@/types/api/enums/UserProfile";
 import { User } from "@/types/api/User";
 import yup from "@/utils/yup";
 import {Form, Formik } from "formik";
-import {Col, Row } from "react-bootstrap";
+import {Button, Col, Row} from "react-bootstrap";
 import {TextFormFieldType} from "@/components/form/TextFormField/TextFormFieldType";
-import {Button} from "@mui/material";
 
 interface UserEditModalProps {
   show: boolean;
