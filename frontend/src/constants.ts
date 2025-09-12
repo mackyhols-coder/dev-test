@@ -27,6 +27,18 @@ export const NAVIGATION_PATH = {
             ABSOLUTE: "/clientes/criar"
         },
         
+    },
+    USERS: {
+        ROOT: "usuarios",
+        LISTING: {
+            RELATIVE: "listagem",
+            ABSOLUTE: "/usuarios/listagem"
+        },
+        CREATE: {
+            RELATIVE: "criar",
+            ABSOLUTE: "/usuarios/criar"
+        },
+        
     }
 }
 

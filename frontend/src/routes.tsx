@@ -41,6 +41,15 @@ export const routes = createBrowserRouter([
         ]
     },
     {
+      path: NAVIGATION_PATH.USERS.ROOT,
+      element: <AuthGuard belongsTo={[UserProfile.Administrator]}><DashboardLayout /></AuthGuard>,
+      errorElement: <Page500 />,
+      children: [
+        { path: NAVIGATION_PATH.USERS.LISTING.RELATIVE, Component: lazy(() => import("@/pages/users/UserListing")) },
+        { path: NAVIGATION_PATH.USERS.CREATE.RELATIVE, Component: lazy(() => import("@/pages/users/UserForm")) },
+      ]
+    },
+    {
         path: NAVIGATION_PATH.AUTH.ROOT,
         element: <AuthLayout />,
         errorElement: <Page500 />,
