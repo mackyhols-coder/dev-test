@@ -10,6 +10,7 @@ namespace Application.Common.Interfaces
     {
         DbSet<Domain.Client> Clients { get; set; }
         DbSet<Domain.User> Users { get; set; }
+        DbSet<Domain.ClientUserAssociation> ClientUser { get; set; }
 
         IExecutionStrategy CreateExecutionStrategy();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);

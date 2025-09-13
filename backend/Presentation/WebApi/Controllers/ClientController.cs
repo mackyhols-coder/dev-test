@@ -8,16 +8,12 @@ using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
-using Application.Client.Commands.ImportClient;
 using Application.Client.Queries.ClientByDocumentQuery;
 using Application.Client.Commands.UpdateClient;
-using Application.Client.Queries.ImportClient;
 using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Imports;
-using WebApi.Commom;
 
 namespace WebApi.Controllers
 {

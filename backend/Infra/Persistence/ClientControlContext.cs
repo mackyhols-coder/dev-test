@@ -13,6 +13,7 @@ namespace Persistence
     {
         public DbSet<Client> Clients { get; set; }
         public DbSet<Domain.User> Users { get; set; }
+        public DbSet<ClientUserAssociation> ClientUser { get; set; }
 
         public ClientControlContext(DbContextOptions<ClientControlContext> options) : base(options) { }
 

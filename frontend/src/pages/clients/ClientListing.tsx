@@ -8,12 +8,13 @@ import Loader from "@/components/Loader";
 import ClientService from "@/services/ClientService";
 import {ClientFilter} from "@/types/api/filters/ClientFilter";
 import {TextFormFieldType} from "@/components/form/TextFormField/TextFormFieldType";
-import {FaEdit, FaUpload} from "react-icons/fa";
+import {FaEdit, FaUpload, FaUsers} from "react-icons/fa";
 import ClientEditModal from "@/pages/clients/ClientEditModal";
 import {toastr} from "@/utils/toastr";
 import {errorHandling} from "@/utils/errorHandling";
 import {formatDateForDisplay} from "@/utils/date";
 import {ImportJobStatus} from "@/types/ImportJob";
+import ClientUsersModal from "@/pages/association/client/ClientUsersModal";
 
 const ClientListing = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const ClientListing = () => {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [isImporting, setIsImporting] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [usersModalShow, setUsersModalShow] = useState<boolean>(false);
 
   const [importJobId, setImportJobId] = useState<string | null>(null);
   const [importStatus, setImportStatus] = useState<ImportJobStatus | null>(null);
@@ -88,6 +90,11 @@ const ClientListing = () => {
     setEditModalShow(true);
   };
 
+  const handleViewUsers = (client: Client) => {
+    setSelectedClient(client);
+    setUsersModalShow(true);
+  };
+  
   const handleSaveClient = async (client: Client) => {
     try {
       if (client.id) {
@@ -105,6 +112,11 @@ const ClientListing = () => {
 
   const handleCloseModal = () => {
     setEditModalShow(false);
+    setSelectedClient(null);
+  };
+
+  const handleCloseUsersModal = () => {
+    setUsersModalShow(false);
     setSelectedClient(null);
   };
 
@@ -209,6 +221,14 @@ const ClientListing = () => {
                   >
                     <FaEdit/>
                   </Button>
+                  <Button
+                    size="sm"
+                    variant="outline-info"
+                    onClick={() => handleViewUsers(row.original)}
+                    title="Ver Usuários Associados"
+                  >
+                    <FaUsers/>
+                  </Button>
                 </div>
               ),
             },
@@ -236,6 +256,11 @@ const ClientListing = () => {
       onSave={handleSaveClient}
     />
 
+    <ClientUsersModal
+      show={usersModalShow}
+      client={selectedClient}
+      onHide={handleCloseUsersModal}
+    />
   </>
 }
 

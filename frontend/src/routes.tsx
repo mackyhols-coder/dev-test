@@ -29,7 +29,6 @@ export const routes = createBrowserRouter([
         errorElement: <Page500 />,
         Component: SplashScreenLayout
     },
-    
     {
         path: NAVIGATION_PATH.CLIENTS.ROOT,
         element: <AuthGuard belongsTo={[UserProfile.Administrator, UserProfile.Operator]}><DashboardLayout /></AuthGuard>,
