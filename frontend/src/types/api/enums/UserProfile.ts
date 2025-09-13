@@ -1,5 +1,6 @@
 export enum UserProfile {
     Administrator = 1,
+    Operator = 2
 }
 
 export function getBadgeColorByUserProfile(value: string) {
@@ -12,5 +13,6 @@ export function getBadgeColorByUserProfile(value: string) {
 export function userProfileOptions() {
     return [
         { id: UserProfile.Administrator, name: "Administrador" },
+        { id: UserProfile.Operator, name: "Operador" },
     ]
 }
